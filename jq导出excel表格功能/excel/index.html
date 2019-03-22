@@ -1,0 +1,265 @@
+﻿<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>jQuery网页表格导出Excel文件</title>
+
+</head>
+<body>
+
+
+		<div class="col-md-3" style="padding:2em 0;">
+			<button type="button" class="btn btn-success btn-block" id="generate-excel">
+				<i class="fa fa-file-excel-o" aria-hidden="true"></i>
+				将表格转换为Excel
+			</button>
+		</div>
+		<div class="col-md-12" style="padding:2em 0;">
+			<div class="table-responsive">
+			<table class="table table-bordered table-striped" id="test_table">
+				<thead>
+				  <tr>
+					<td>等级</td>
+					<td>姓名</td>
+					<td>城市</td>
+					<td>州</td>
+					<td>部门</td>
+					<td>选取</td>
+					<td>票数</td>
+				  </tr>
+				</thead>
+				<tbody>
+				  		<tr>
+					  <td>
+								<span>1</span>
+							</td>
+							<td>
+								<span>Small, Steve </span>
+							</td>
+							<td>
+								<span>New York</span>
+							</td>
+							<td>
+								<span>NY</span>
+							</td>
+							<td>
+								<span>Eastern</span>
+							</td>
+							<td>
+								<span>Metropolitan Region</span>
+							</td>
+							<td>
+								<span>378</span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span>2</span>
+							</td>
+							<td>
+								<span>Novello, Rodolfo </span>
+							</td>
+							<td>
+								<span>Lawrence</span>
+							</td>
+							<td>
+								<span>NY</span>
+							</td>
+							<td>
+								<span>Eastern</span>
+							</td>
+							<td>
+								<span>Long Island Region</span>
+							</td>
+							<td>
+								<span>223</span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span>3</span>
+							</td>
+							<td>
+								<span>O'Neill, Jim </span>
+							</td>
+							<td>
+								<span>Philmont</span>
+							</td>
+							<td>
+								<span>NY</span>
+							</td>
+							<td>
+								<span>Eastern</span>
+							</td>
+							<td>
+								<span>Northern Region</span>
+							</td>
+							<td>
+								<span>192</span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span>4</span>
+							</td>
+							<td>
+								<span>Sobong, Emmanuel </span>
+							</td>
+							<td>
+								<span>River Edge</span>
+							</td>
+							<td>
+								<span>NJ</span>
+							</td>
+							<td>
+								<span>Eastern</span>
+							</td>
+							<td>
+								<span>New Jersey Region</span>
+							</td>
+							<td>
+								<span>162</span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span>5</span>
+							</td>
+							<td>
+								<span>Stewart, Cliff </span>
+							</td>
+							<td>
+								<span>Bridgewater</span>
+							</td>
+							<td>
+								<span>NJ</span>
+							</td>
+							<td>
+								<span>Eastern</span>
+							</td>
+							<td>
+								<span>New Jersey Region</span>
+							</td>
+							<td>
+								<span>132</span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span>6</span>
+							</td>
+							<td>
+								<span>Erskine, Ronald G </span>
+							</td>
+							<td>
+								<span>Ridgewood</span>
+							</td>
+							<td>
+								<span>NJ</span>
+							</td>
+							<td>
+								<span>Eastern</span>
+							</td>
+							<td>
+								<span>New Jersey Region</span>
+							</td>
+							<td>
+								<span>126</span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span>6</span>
+							</td>
+							<td>
+								<span>Levine, Max </span>
+							</td>
+							<td>
+								<span>West Sand Lake</span>
+							</td>
+							<td>
+								<span>NY</span>
+							</td>
+							<td>
+								<span>Eastern</span>
+							</td>
+							<td>
+								<span>Northern Region</span>
+							</td>
+							<td>
+								<span>126</span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span>6</span>
+							</td>
+							<td>
+								<span>Warren, Paul </span>
+							</td>
+							<td>
+								<span>Schenectady</span>
+							</td>
+							<td>
+								<span>NY</span>
+							</td>
+							<td>
+								<span>Eastern</span>
+							</td>
+							<td>
+								<span>Northern Region</span>
+							</td>
+							<td>
+								<span>126</span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span>9</span>
+							</td>
+							<td>
+								<span>Fischbach, David </span>
+							</td>
+							<td>
+								<span>Prt Washingtn</span>
+							</td>
+							<td>
+								<span>NY</span>
+							</td>
+							<td>
+								<span>Eastern</span>
+							</td>
+							<td>
+								<span>Long Island Region</span>
+							</td>
+							<td>
+								<span>97</span>
+							</td>
+						</tr>
+				</tbody>
+			  </table>
+			</div>
+		</div>
+
+
+<script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/jszip/3.1.5/jszip.min.js"></script>
+<script type="text/javascript" src="external/FileSaver.js"></script>
+<script type="text/javascript" src="scripts/excel-gen.js"></script>
+
+<script>
+    $(document).ready(function () {
+        excel = new ExcelGen({
+            "src_id": "test_table",
+            "show_header": true
+        });
+        $("#generate-excel").click(function () {
+            alert('dddd')
+            excel.generate();
+        });
+    });
+</script>
+</body>
+</html>
