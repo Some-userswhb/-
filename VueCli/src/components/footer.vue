@@ -1,7 +1,7 @@
 <template>
     <div>
 
-      <div class="footer" style="text-align: center;color: white">底部底部底部底部底部底部底部底部</div>
+      <div class="footer" style="text-align: center;color: white">底部</div>
 
     </div>
 </template>
@@ -10,7 +10,9 @@
     export default {
 
         data () {
-            return {}
+            return {
+
+            }
         }
     }
 </script>
@@ -18,6 +20,8 @@
 
 <style>
   .footer{
+    position: absolute;
+    bottom: 0;
     width: 100%;
     height: 50px;
     background:blue;

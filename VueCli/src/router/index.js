@@ -22,6 +22,10 @@ export default new VueRouter({
     {
       path:'/shop',
       component:Shop
+    },
+    {
+      path:'/',
+      redirect:'/home'
     }
   ]
 

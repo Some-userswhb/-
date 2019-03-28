@@ -186,6 +186,13 @@
                     content: 'message_addinfo.html'
                 })
             }
+        },
+        menulist: function () {
+            var that = this
+            that.$nextTick(function () {
+                menuset()
+                dataIndex()
+            });
         }
     });
 

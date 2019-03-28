@@ -5,6 +5,8 @@
 
       <div class="content">
 
+
+
       </div>
       <Footer/>
     </div>
@@ -45,9 +47,10 @@
 
   }
   .content{
-    width: 500px;
+    width: 600px;
     height: 500px;
     background-color: gold;
     border-radius:50%;
+
   }
 </style>
