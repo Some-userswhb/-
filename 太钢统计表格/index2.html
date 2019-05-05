@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>太钢统计明细表</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body>
+
+<div id="wrap">
+<div id="tg-wrap" v-cloak>
+
+
+
+    <h1>太钢统计明细表</h1>
+    <div class="table2-button">
+
+        <button type="button" class="btn btn-primary" onClick="Print('#wrap')">在线打印</button>
+        <button type="button" class="btn btn-primary" id="generate-excel">导出excel</button>
+    </div>
+    <div class="tg-table2">
+        <div class="tg-table1">
+            <table class="table table-bordered" style="text-align: center" id="test_table">
+
+                <tr>
+                    <td>项目编号</td>
+                    <td>项目名称</td>
+                    <td>预算金额</td>
+                    <td>成交金额</td>
+                    <td>节约金额</td>
+                    <td>节约资金率</td>
+                </tr>
+                <!--政府采购-->
+                <tr v-for="(minx,name) in table2">
+                    <td>{{minx.项目编号}}</td>
+                    <td>{{minx.项目名称}}</td>
+                    <td>{{minx.预算金额}}</td>
+                    <td v-if="minx.成交金额">{{minx.成交金额}}</td>
+                    <td v-else>--</td>
+                    <td>{{minx.预算金额 - minx.成交金额}}</td>
+                    <td>{{(minx.预算金额 - minx.成交金额) / minx.预算金额 * 100 +'%'}}</td>
+
+                </tr>
+                <!--合计-->
+                <tr>
+                    <td>合计</td>
+
+
+                    <td>--</td>
+                    <td>{{table2yusuansum}}</td>
+                    <td>{{table2chengjiaosum}}</td>
+                    <td>{{table2jieyuesum}}</td>
+                    <td>{{table2jieyuelvsum}}</td>
+
+                </tr>
+
+            </table>
+
+
+        </div>
+        <nav aria-label="Page navigation" class="navigation">
+
+            <div class="page-num"> 当前在第 {{iiiddd}}页 共显示10条数据</div>
+
+            <ul class="pagination">
+                <li>
+                    <a href="##" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li @click="fpage(item.id,index)" v-for="(item,index) in fenpage" :key="index">
+                    <a href="##">{{item.num}}</a>
+                </li>
+
+                <li>
+                    <a href="##" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+
+</div>
+</div>
+</body>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/vue2.5.22.js"></script>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/jszip/3.1.5/jszip.min.js"></script>
+<script type="text/javascript" src="external/FileSaver.js"></script>
+<script src="js/excel-gen.js"></script>
+
+
+<script>
+    new Vue({
+        el: "#tg-wrap",
+        data: {
+
+            fenpage:[
+                { "id":1 ,"num":1},
+                { "id":2 ,"num":2},
+                { "id":3 ,"num":3},
+                { "id":4 ,"num":4},
+                { "id":5 ,"num":5},
+            ],
+
+
+            //明细表总计
+            table2:[],
+            table2yusuansum:'',
+            table2chengjiaosum:'',
+            table2jieyuesum:'',
+            table2jieyuelvsum:'',
+            pageid:'',
+            iiiddd:'1'
+
+        },
+        methods:{
+            setUnidet(){
+                var that = this;
+
+                $.ajax({
+                    url:"http://preview.tisco.puluodike.cn/tisco/report/findItemDetailByBuyMethod",
+                    data: {
+                        "buy_method_id":that.pageid,
+                        "pageNo": 1,
+                        "pageSize": 10
+                    },
+                    async: false,
+                    dataType:"json",
+                    success:  function (result) {
+                        that.table2 = result.itemResult;
+                        console.log(result.itemResult)
+                        console.log(that.table2)
+                        var tabele2sum1 = 0;
+                        var tabele2sum2 = 0;
+                        for(var i=0;i<that.table2.length;i++){
+
+                            tabele2sum1 += parseInt(that.table2[i].预算金额);
+                            if(that.table2[i].成交金额 === null){
+                                that.table2[i].成交金额 = 0
+                            }
+                            tabele2sum2 += parseInt(that.table2[i].成交金额)
+
+                        }
+
+
+                        that.table2yusuansum = tabele2sum1
+                        that.table2chengjiaosum = tabele2sum2
+                        that.table2jieyuesum  = tabele2sum1 - tabele2sum2
+                        var eee = (that.table2jieyuesum/tabele2sum1) * 100
+                        eee = eee.toFixed(2)
+                        that.table2jieyuelvsum = eee +'%'
+
+
+
+
+
+                    },
+
+                })
+
+
+            },
+
+
+            fpage(pid,ind){
+                var that = this
+                that.iiiddd = pid //左侧显示第几页
+
+                $.ajax({
+                    url:"http://preview.tisco.puluodike.cn/tisco/report/findItemDetailByBuyMethod",
+                    data: {
+                        "buy_method_id": that.pageid,
+                        "pageNo": pid,
+                        "pageSize": 10
+                    },
+                    async: false,
+                    dataType:"json",
+                    success:  function (result) {
+                        that.table2 = result.itemResult;
+                        var tabele2sum1 = 0;
+                        var tabele2sum2 = 0;
+                        for(var i=0;i<that.table2.length;i++){
+
+                            tabele2sum1 += parseInt(that.table2[i].预算金额)
+                            if(that.table2[i].成交金额 === null){
+                                that.table2[i].成交金额 = 0
+                            }
+                            tabele2sum2 += parseInt(that.table2[i].成交金额)
+
+                        }
+
+
+                        that.table2yusuansum = tabele2sum1
+                        that.table2chengjiaosum = tabele2sum2
+                        that.table2jieyuesum  = tabele2sum1 - tabele2sum2
+                        var eee = (that.table2jieyuesum/tabele2sum1) * 100
+                        eee = eee.toFixed(2)
+                        that.table2jieyuelvsum = eee +'%'
+
+
+
+                    },
+
+                })
+
+
+            },
+
+            getUrlUrseId(){
+                var that = this
+                var str = location.search;// url?后面的数据
+                str.toString();
+                str = str.substring(1); //吧 ？ 截取掉
+                that.pageid = str       //放到data里面
+
+                that.setUnidet()
+            },
+
+
+        },
+        mounted(){
+
+            this.getUrlUrseId()
+
+
+        }
+
+
+
+
+    })
+
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        excel = new ExcelGen({
+            "src_id": "test_table",
+            "show_header": true
+        });
+        $("#generate-excel").click(function () {
+            excel.generate();
+        });
+    });
+</script>
+<script src="js/Print.js"></script>
+</html>

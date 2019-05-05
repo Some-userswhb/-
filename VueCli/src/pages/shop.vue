@@ -2,11 +2,14 @@
     <div>
 
         <button @click="goto('/home')" >毛泽东思想</button>
+        <button @click="goto('/china')" >中国特色社会主义理论体系</button>
+
+
 
 
       <div class="content">
 
-        <ol>
+        <ul>
           <li>
             毛泽东思想形成的实践基础是中国共产党领导的 <span>(革命和建设实践)</span>
           </li>
@@ -19,18 +22,48 @@
           <li>现在中国的性质是 <span>(半殖民地半封建社会)</span> </li>
           <li>新民主主义最基本的动力是 <span>(工人阶级)</span> </li>
           <li>新民主主义的经济纲领规定 没收封建地主阶级的土地 <span>(归农民所有)</span> </li>
-          <li>三座大山</li>
+          <h3>三座大山</h3>
           <li>新民主主义革命的对象是 <span>(帝国主义，封建主义和官僚资本主义)</span> </li>
           <li>新民主主义革命总路线的核心是 <span>(无产阶级领导)</span> </li>
-          <li>中国革命最凶恶的敌人是 <span>(帝国主义)</span> </li>
           <li>中国革命的主力军是 <span>(农民阶级)</span> </li>
+          <li>中国革命最凶恶的敌人是 <span>(帝国主义)</span> </li>
           <li> <span>()</span> </li>
           <li> <span>()</span> </li>
           <li> <span>()</span> </li>
           <li> <span>()</span> </li>
           <li> <span>()</span> </li>
           <li> <span>()</span> </li>
-        </ol>
+          <li> <span>()</span> </li>
+          <li> <span>()</span> </li>
+          <li> <span>()</span> </li>
+          <li> <span>()</span> </li>
+          <li> <span>()</span> </li>
+          <li> <span>()</span> </li>
+          <li> <span>()</span> </li>
+          <li> <span>()</span> </li>
+          <li> <span>()</span> </li>
+          <li> <span>()</span> </li>
+          <li> <span>()</span> </li>
+          <li> <span>()</span> </li>
+          <li> <span>()</span> </li>
+          <li> <span>()</span> </li>
+          <li> <span>()</span> </li>
+          <li> <span>()</span> </li>
+          <li> <span>()</span> </li>
+          <li> <span>()</span> </li>
+          <li> <span>()</span> </li>
+          <li> <span>()</span> </li>
+          <li> <span>()</span> </li>
+          <li> <span>()</span> </li>
+          <li> <span>()</span> </li>
+          <li> <span>()</span> </li>
+        </ul>
+
+
+
+        <div>
+          <p></p>
+        </div>
 
 
 
@@ -74,7 +107,6 @@
     cursor: pointer;
     margin-bottom: 50px;
     font-weight: bold;
-
   }
   .content{
     padding-left: 30px;
@@ -82,7 +114,7 @@
     font-weight: bold;
     letter-spacing: 3px;
   }
-  ol li span{
+  ul li span{
     color: red;
   }
 

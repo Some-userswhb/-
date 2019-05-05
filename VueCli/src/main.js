@@ -3,14 +3,13 @@
 import Vue from 'vue'
 import App from './App'
 
-import router from './router';
-
+import Router from './router/index'
 
 var vm = new Vue({
   el: '#app',
   components: {
     App
   },
-  router,
+  Router,
   template: '<App/>'
-})
+});

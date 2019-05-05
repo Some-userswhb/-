@@ -1,0 +1,13 @@
+const that = this;
+                $.ajax({
+                    url: baseUrl + "/api/category/list",
+                    data:{
+                        parentId:"181"
+                    },
+                    async: false,
+                    dataType:"json",
+                    success:  function (result) {
+                        that.mask1left = (result.data);
+                        console.log(that.mask1left)
+                    }
+                })

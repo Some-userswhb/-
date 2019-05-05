@@ -1,0 +1,17 @@
+				var that = this
+                axios({
+                    method: 'post',
+                    headers: {'Content-Type': 'application/json'},
+                    url: baseUrl + "/passLaborweb/api/laborun/systemDictionary/query",
+                    data: {
+                        "sn": "messageStatus"
+                    }
+                }).then(function (res) {
+                    if(res.data.code ==='0'){
+                        $.each(res.data.data, function (index, item) {
+                            if(item.messageStatus !== undefined){
+                                that.messageStatuses = item.messageStatus;
+                            }
+                        })
+                    }
+                });

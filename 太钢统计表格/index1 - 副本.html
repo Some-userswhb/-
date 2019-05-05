@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>太钢统计汇总表</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body>
+
+<div id="wrap">
+    <div id="tg-wrap" v-cloak>
+
+
+        <h1>太钢统计汇总表</h1>
+        <div class="table1-button">
+            <button type="button" class="btn btn-primary" onClick="Print('#wrap')">在线打印</button>
+            <button type="button" class="btn btn-primary" id="generate-excel">导出excel</button>
+
+
+            <input type="text" v-model="startYear">
+            <input type="text" v-model="startDate">
+            <input type="text" v-model="endDate">
+            <button @click="search">查询</button>
+
+            <!--开始时间:  <input type="date" name="draw_date" v-model="startDate" @change="showSdate">-->
+            <!--结束时间:  <input type="date" name="draw_date" v-model="endDate " @change="showEdata">-->
+
+        </div>
+        <div class="tg-table1">
+            <table class="table table-bordered" style="text-align: center" id="test_table">
+                <div class="table-time">
+                    <p class="flo-left"></p>
+                    <p class="flo-right">时间:<span>2019-3-12</span></p>
+                </div>
+                <tr>
+                    <td>父项目类型</td>
+                    <td>项目类型</td>
+                    <td>交易数</td>
+                    <td>预算金额</td>
+                    <td>成交金额</td>
+                    <td>节约资金</td>
+                    <td>节约资金率</td>
+                </tr>
+
+                <!--政府采购-->
+                <tr v-for="(item,name) in zhengFu" class="first-zhengfu">
+                    <td>{{item.父项目类型}}</td>
+                    <td>{{item.项目类型}}</td>
+                    <td @click="setUnidet(item.buy_method_id,item.交易数,item.项目类型)" class="curp">{{item.交易数}}</td>
+                    <td>{{item.预算金额}}</td>
+                    <td v-if="item.成交金额">{{item.成交金额}}</td>
+                    <td v-else>--</td>
+                    <td v-if="item.节约资金">{{item.节约资金}}</td>
+                    <td v-else>--</td>
+                    <td v-if="item.节约资金率">{{item.节约资金率 *100 +'%'}}</td>
+                    <td v-else>--</td>
+                </tr>
+                <tr style="background-color: #cccccc">
+                    <td></td>
+                    <td>小计</td>
+                    <td>{{zhengFujiaoyinum}}</td>
+                    <td>{{zhengFuyusuannum}}</td>
+                    <td>{{zhengFuchengjiaonum}}</td>
+                    <td>{{zhengFujieyuenum}}</td>
+                    <td>{{zhengFujieyuelvnum}}</td>
+                </tr>
+
+                <!--中介服务-->
+                <tr v-for="(item,name) in zhongjiefuwu" class="zhongjie-fuwu">
+                    <td>{{item.父项目类型}}</td>
+                    <td>{{item.项目类型}}</td>
+                    <td @click="setUnidet(item.buy_method_id,item.交易数,item.项目类型)" class="curp">{{item.交易数}}</td>
+                    <td>{{item.预算金额}}</td>
+                    <td v-if="item.成交金额">{{item.成交金额}}</td>
+                    <td v-else>--</td>
+                    <td v-if="item.节约资金">{{item.节约资金}}</td>
+                    <td v-else>--</td>
+                    <td v-if="item.节约资金率">{{item.节约资金率 *100 +'%'}}</td>
+                    <td v-else>--</td>
+                </tr>
+                <tr style="background-color: #cccccc">
+                    <td></td>
+                    <td>小计</td>
+
+
+                    <td>{{zhongjiefuwujiaoyinum}}</td>
+                    <td>{{zhongjiefuwusuyuaninum}}</td>
+                    <td>{{zhongjiefuwuchengjiaonum}}</td>
+                    <td>{{zhongjiefuwujieyuenum}}</td>
+                    <td>{{zhongjiefuwujieyuelvnum}}</td>
+                </tr>
+
+
+                <!--工程建设-->
+                <tr v-for="(item,name) in gongchengjianshe" class="gongcheng-jianshe">
+                    <td>{{item.父项目类型}}</td>
+                    <td>{{item.项目类型}}</td>
+                    <td @click="setUnidet(item.buy_method_id,item.交易数,item.项目类型)" class="curp">{{item.交易数}}</td>
+                    <td>{{item.预算金额}}</td>
+                    <td v-if="item.成交金额">{{item.成交金额}}</td>
+                    <td v-else>--</td>
+                    <td v-if="item.节约资金">{{item.节约资金}}</td>
+                    <td v-else>--</td>
+                    <td v-if="item.节约资金率">{{item.节约资金率 *100 +'%'}}</td>
+                    <td v-else>--</td>
+                </tr>
+                <tr style="background-color: #cccccc">
+                    <td></td>
+                    <td>小计</td>
+                    <td>{{gongchengxiaojinum}}</td>
+                    <td>{{gongchengyusuannum}}</td>
+                    <td>{{gongchengchengjiaonum}}</td>
+                    <td>{{gongchengjieyuenum}}</td>
+                    <td>{{gongchengjieyuelvnum}}</td>
+                </tr>
+
+
+                <!--合计-->
+                <tr>
+                    <td colspan="2">合计</td>
+                    <td>{{jiaoYiSum}}</td>
+                    <td>{{yusuanSum}}</td>
+                    <td>{{chengJiaoSum}}</td>
+                    <td>{{jieYueSum}}</td>
+                    <td>{{jieYuebaifen}}</td>
+                </tr>
+
+            </table>
+
+        </div>
+
+    </div>
+</div>
+</body>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/vue2.5.22.js"></script>
+
+<script type="text/javascript" src="js/jszip.js"></script>
+<script type="text/javascript" src="external/FileSaver.js"></script>
+<script src="js/excel-gen.js"></script>
+
+
+<script>
+    new Vue({
+        el: "#tg-wrap",
+        data: {
+            //时间
+            startDates: '2019-02-03',
+            endDates: '2019-05-06',
+
+            startYear: '',
+            startDate: '',
+            endDate: '',
+
+            kaitime: '',
+            kaiyear: '',
+            jieyear: '',
+
+
+            //政府
+            zhengFu: [],
+            zhengFujiaoyinum: '',
+            zhengFuyusuannum: '',
+            zhengFuchengjiaonum: '',
+            zhengFujieyuenum: '',
+            zhengFujieyuelvnum: '',
+
+            //中介
+            zhongjiefuwu: [],
+            zhongjiefuwujiaoyinum: '',
+            zhongjiefuwusuyuaninum: '',
+            zhongjiefuwuchengjiaonum: '',
+            zhongjiefuwujieyuenum: '',
+            zhongjiefuwujieyuelvnum: '',
+
+            //工程建设
+            gongchengjianshe: [],
+            gongchengxiaojinum: '',
+            gongchengyusuannum: '',
+            gongchengchengjiaonum: '',
+            gongchengjieyuenum: '',
+            gongchengjieyuelvnum: '',
+
+            //汇总表总计
+            table1: [],
+            yusuanSum: '',
+            jiaoYiSum: '',
+            chengJiaoSum: '',
+            jieYueSum: '',
+            jieYuebaifen: '',
+
+            //明细表总计
+            table2: [],
+            table2yusuansum: '',
+            table2chengjiaosum: '',
+            table2jieyuesum: '',
+            table2jieyuelvsum: '',
+
+            pageid: ''
+
+        },
+        methods: {
+            //大统计表格数据请求
+            gethuizongtb(){
+                var that = this
+                $.ajax({
+                    url: "http://192.168.3.10:8080/pldk-tisco/report/findAllItem",
+                    data: {
+
+                        "year": that.startYear,
+                        "start_date": that.startDate,
+                        "end_date": that.endDate
+                    },
+                    async: false,
+                    dataType: "json",
+                    success: function (result) {
+
+
+                        that.table1 = result.itemResult;
+
+                        var tab = that.table1
+                        console.log(tab)
+
+                        //总计
+                        var sum1 = 0;
+                        var sum2 = 0;
+                        var sum3 = 0;
+                        var newarroo = [];
+                        for (var i = 0; i < tab.length; i++) {
+                            sum1 += tab[i].交易数;
+                            sum2 += tab[i].预算金额;
+                            sum3 += tab[i].成交金额;
+                            if (tab[i].父项目类型 === "政府采购") {
+
+                                that.zhengFu.push(tab[i])
+                            }
+                            if (tab[i].父项目类型 === "中介服务机构") {
+
+                                that.zhongjiefuwu.push(tab[i])
+                            }
+                            if (tab[i].父项目类型 === "工程建设") {
+                                that.gongchengjianshe.push(tab[i])
+                            }
+
+                        }
+                       /* console.log(newarroo);
+                        //1.对同名数据进行排列
+//                      2.计算每个同名数据的个数
+//                      3.总共有几个不同名数据
+                        var _res = []; //
+                        newarroo.sort();
+                        for (var i = 0; i < newarroo.length;) {
+                            var count = 0;
+                            for (var j = i; j < newarroo.length; j++) {
+                                if (newarroo[i] == newarroo[j]) {
+                                    count++;
+                                }
+                            }
+                            _res.push([newarroo[i], count]);
+                            i += count;
+                        }
+                        console.log(_res);
+//_res 二维数维中保存了 值和值的重复数
+                        var newrrrr = [];
+                        for (var i = 0; i < _res.length;i++) {
+
+                            for (var j= 0; j < tab.length; j++) {
+//                                console.log(tab[j]);
+
+                                 if (tab[j].父项目类型 == _res[i][0]) {
+
+                                    var arrStr = [_res[i][0], tab[j]];
+                                     newrrrr.push(arrStr)
+                                 }
+                            }
+
+                        }
+//                        console.log(newrrrr);
+                        var ress=[];
+                        for (var i = 0; i < newrrrr.length;) {
+                            var count = [];
+                            for (var j = i; j < newrrrr.length; j++) {
+                                if (newrrrr[i][0] == newrrrr[j][0]) {
+                                    count.push(newrrrr[i][0])
+                                }
+                            }
+                            ress.push([newrrrr[i], count]);
+
+                        }
+                        console.log(ress);*/
+                        console.log(that.zhengFu)
+                        console.log(that.zhongjiefuwu)
+                        console.log(that.gongchengjianshe)
+
+                        that.jiaoYiSum = parseInt(sum1)
+                        that.yusuanSum = parseInt(sum2)
+                        that.chengJiaoSum = parseInt(sum3)
+                        that.jieYueSum = parseInt(sum2 - sum3)
+                        var jieyuelv = ((sum2 - sum3) / sum2) * 100;
+                        jieyuelv = jieyuelv.toFixed(2);
+                        that.jieYuebaifen = jieyuelv + '%';  //节约资金率
+
+                    },
+
+                })
+            },
+            //小计
+            getsmallsum(){
+                var that = this
+                var zhengfusum1 = 0
+                var zhengfusum2 = 0
+                var zhengfusum3 = 0
+                var zhengfusum4 = 0
+
+                for (var i = 0; i < that.zhengFu.length; i++) {
+                    zhengfusum1 += that.zhengFu[i].交易数
+                    zhengfusum2 += that.zhengFu[i].预算金额
+                    zhengfusum3 += that.zhengFu[i].成交金额
+                    zhengfusum4 += that.zhengFu[i].节约资金
+
+
+                }
+                that.zhengFujiaoyinum = parseInt(zhengfusum1)
+                that.zhengFuyusuannum = parseInt(zhengfusum2)
+                that.zhengFuchengjiaonum = parseInt(zhengfusum3)
+                that.zhengFujieyuenum = parseInt(zhengfusum4)
+                var aaa = (zhengfusum4 / zhengfusum2) * 100
+                aaa = aaa.toFixed(2)
+                that.zhengFujieyuelvnum = aaa + '%'
+
+
+                //中介服务
+                var zhognjiesum1 = 0
+                var zhognjiesum2 = 0
+                var zhognjiesum3 = 0
+                var zhognjiesum4 = 0
+                for (var j = 0; j < that.zhongjiefuwu.length; j++) {
+                    zhognjiesum1 += that.zhongjiefuwu[j].交易数
+                    zhognjiesum2 += that.zhongjiefuwu[j].预算金额
+                    zhognjiesum3 += that.zhongjiefuwu[j].成交金额
+                    zhognjiesum4 += that.zhongjiefuwu[j].节约资金
+
+                }
+                that.zhongjiefuwujiaoyinum = parseInt(zhognjiesum1)
+                that.zhongjiefuwusuyuaninum = parseInt(zhognjiesum2)
+                that.zhongjiefuwuchengjiaonum = parseInt(zhognjiesum3)
+                that.zhongjiefuwujieyuenum = parseInt(zhognjiesum4)
+                var bbb = (zhognjiesum4 / zhognjiesum2) * 100
+                bbb = bbb.toFixed(2)
+                that.zhongjiefuwujieyuelvnum = bbb + '%'
+
+
+                //工程建设
+                var gongcengsum1 = 0
+                var gongcengsum2 = 0
+                var gongcengsum3 = 0
+                var gongcengsum4 = 0
+                for (var k = 0; k < that.gongchengjianshe.length; k++) {
+                    gongcengsum1 += that.gongchengjianshe[k].交易数
+                    gongcengsum2 += that.gongchengjianshe[k].预算金额
+                    gongcengsum3 += that.gongchengjianshe[k].成交金额
+                    gongcengsum4 += that.gongchengjianshe[k].节约资金
+                }
+                that.gongchengxiaojinum = parseInt(gongcengsum1)
+                that.gongchengyusuannum = parseInt(gongcengsum2)
+                that.gongchengchengjiaonum = parseInt(gongcengsum3)
+                that.gongchengjieyuenum = (gongcengsum2 - gongcengsum3)
+                var ccc = (gongcengsum2 - gongcengsum3) / gongcengsum2 * 100
+                ccc = ccc.toFixed(2)
+                that.gongchengjieyuelvnum = ccc + '%'
+
+
+            },
+            //传递id 时间 总数据 参数
+            setUnidet(id, page, name){
+                var sdate = this.startDates
+                var edate = this.endDates
+
+                window.open('index3333.html' + '?' + id + page + '&&' + sdate + '&&' + edate)
+
+            },
+            //根据时间
+            search(){
+                var that = this
+                that.gethuizongtb()
+            },
+
+            hebing(){
+
+
+                    window.onload = function () {
+                        console.log(this.zhongjiefuwu)
+                        $('.first-zhengfu td:first-child').remove()
+                        $('.first-zhengfu').first().
+                        prepend('<td class="zhengfu" rowspan=9>' +'政府采购'+' </td>')
+                        var zhengheight = $('.zhengfu').height()
+                        $('.zhengfu').css('line-height',+ zhengheight + 'px')
+
+
+                        $('.zhongjie-fuwu td:first-child').remove()
+                        $('.zhongjie-fuwu').first().
+                        prepend('<td class="zhongjie" rowspan=1>' +'中介服务'+' </td>')
+                        var zhongjieheight = $('.zhongjie').height()
+                        $('.zhongjie').css('line-height',+ zhongjieheight + 'px')
+
+
+                        $('.gongcheng-jianshe td:first-child').remove()
+                        $('.gongcheng-jianshe').first().prepend('<td class="gongcehng" rowspan=4>' +'工程建设'+' </td>')
+                        var gongchenghieght = $('.gongcehng').height()
+                        $('.gongcehng').css('line-height',+ gongchenghieght + 'px')
+
+                    }
+
+            }
+
+
+        },
+        mounted(){
+            var that = this
+            that.gethuizongtb();
+            that.getsmallsum();
+            that.hebing()
+
+        },
+        zhengFu: function () {
+            var that = this
+            that.$nextTick(function () {
+                alert('dddd')
+            });
+        }
+
+
+    })
+
+
+
+
+
+
+
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        excel = new ExcelGen({
+            "src_id": "test_table",
+            "show_header": true
+        });
+        $("#generate-excel").click(function () {
+            excel.generate();
+        });
+
+
+
+
+
+
+    });
+</script>
+<script src="js/Print.js"></script>
+</html>

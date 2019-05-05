@@ -10,7 +10,7 @@ import Home from '../pages/home.vue'
 import Shop from '../pages/shop.vue'
 
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 export default new VueRouter({
   mode: 'history',
